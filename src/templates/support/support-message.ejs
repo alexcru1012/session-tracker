@@ -1,0 +1,24 @@
+<%- include('../parts/header.ejs', { title, appName, appUrl, stylesheet }) %>
+
+<div class="f-fallback">
+  <h1 style="font-weight: 400;">New Support Message</h1>
+  <h4>User details</h4>
+  <ul>
+    <% if (userAvatar) { %>
+    <li class="avatar-container">
+      <img class="avatar-img" src="<%= userAvatar %>" />
+    </li>
+    <% } %>
+    <li>email: <%= userEmail %></li>
+    <li>name: <%= userName %></li>
+  </ul>
+
+  <h6 style="margin-top: 14px; margin-bottom: 4px;">Subject</h6>
+  <div><%= subject %></div>
+
+  <h6 style="margin-top: 24px; margin-bottom: 4px;">Message</h6>
+  <p><%= message %></p>
+
+</div>
+
+<%- include('../parts/footer.ejs', { year, appName, appUrl }) %>

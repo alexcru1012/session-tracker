@@ -1,0 +1,10 @@
+{
+  "apps": [
+    {
+      "name": "staging",
+      "cwd": "/var/www/staging-session-tracker-api",
+      "script": "./dist/src/index.js",
+      "exec_mode": "fork_mode"
+    }
+  ]
+}

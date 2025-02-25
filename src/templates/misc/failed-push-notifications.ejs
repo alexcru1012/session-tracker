@@ -1,0 +1,17 @@
+<%- include('../parts/header.ejs', { title, appName, appUrl, stylesheet, showHeaderLogo }) %>
+
+<div class="f-fallback">
+  <h1 style="font-weight: 400;">Woah,</h1>
+  
+  <p>Some push notifications have received errors! Please make sure Apple or Google isn't yelling at us.</p>
+
+  <ul>
+    <% failedReceipts.forEach(function(receipt, index) { %>
+      <li><%= JSON.stringify(receipt) %></li>
+    <% }); %>
+  </ul>
+
+  <p>Have a nice day!</p>
+</div>
+
+<%- include('../parts/footer.ejs', { year, appName, appUrl }) %>

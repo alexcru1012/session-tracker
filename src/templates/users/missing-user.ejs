@@ -1,0 +1,14 @@
+<%- include('../parts/header.ejs', { title, appName, appUrl, stylesheet, showHeaderLogo }) %>
+
+<div class="f-fallback">
+  <h3><%= title %></h3>
+
+  <p>Hi <%= trainerName %>,</p>
+  <p>We noticed that you downloaded Session Tracker previously but stopped using it.<p>
+  <p>What can we do to make the app better for you? We update the app all the time based on client feedback and would love to hear what you think!</p>
+  <p>Please reply directly to this email if you have any comments or suggestions for the app.</p>
+  <p>Thanks in advance,</p>
+  <p>Steve & Nico</p>
+
+  <%- include('../parts/footer.ejs', { year, appName, appUrl }) %>
+</div>

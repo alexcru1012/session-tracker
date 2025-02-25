@@ -1,0 +1,18 @@
+{
+  "watch": [
+    "src"
+  ],
+  "ext": "ts,js,json",
+  "ignore": [
+    ".git",
+    "node_modules"
+  ],
+  "events": {
+    "restart": "echo '☺ You made a change ☺ Restarting...\n'"
+  },
+  "legacyWatch": true,
+  "exec": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register src/index.ts",
+  "env": {
+    "NODE_ENV": "development"
+  }
+}

@@ -1,0 +1,15 @@
+<%- include('../parts/header.ejs', { title, appName, appUrl, stylesheet }) %>
+
+<h2>Hello!</h2>
+<p>Thanks for signing up. Please follow the link below to activate your <%= appName %> account.
+</p>
+<p>This link will be valid for 48h.</p>
+
+<div class="align-center" style="margin-bottom: 21px;">
+  <a href="<%= link %>" class="big-button">Activate my account</a>
+</div>
+
+<p>Please email <a href="mailto:<%= supportEmail %>"><%= supportEmail %></a> if you have any questions or need
+  assistance.</p>
+
+<%- include('../parts/footer.ejs', { year, appName, appUrl }) %>

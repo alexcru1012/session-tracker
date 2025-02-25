@@ -1,0 +1,36 @@
+<%- include('../parts/header.ejs', { title, appName, appUrl, stylesheet, showHeaderLogo }) %>
+
+<div class="f-fallback">
+
+  <h1 style="text-align: center; margin-top: 0;"><%= title %></h1>
+
+  <% if (trainerAvatar) { %>
+    <div class="avatar-container center" style="text-align: center; margin: 0px auto;">
+      <img width="30" height="30" class="avatar-img" src="<%= trainerAvatar %>" />
+    </div>
+  <% } %>
+
+  <p style="text-align: center; margin-bottom: 30px;">Your session with <b><%= trainerName %></b> on <b><%= dateLabel %></b> has been cancelled.</p>
+
+    <h2 class="title" style="margin-bottom: 10px; font-weight: bold;">Cancelled: <%= eventTitle %></h2>
+    <div style="margin-bottom: 7px;"><%= sessionTypeLabel %></div>
+    <div style="margin-bottom: 7px;"><%= whenDateLabel %></div>
+    <div style="margin-bottom: 7px;"><%= whenTimeLabel %></div>
+
+    <% if (trainerHasContact) { %>
+      <div style="margin-top: 30px; margin-bottom: 21px;">
+        <div style="margin-bottom: 7px;">For questions or schedule changes, please contact <%= trainerName %></div>
+        <% if (trainerContactEmail) { %>
+        <div style="margin-bottom: 7px;">Email: <a href="mailto:<%= trainerContactEmail %>"><%= trainerContactEmail %></a>
+        </div>
+        <% } %>
+        <% if (trainerContactPhone) { %>
+        <div style="margin-bottom: 7px;">Phone: <a href="tel:<%= trainerContactPhone %>"><%= trainerContactPhone %></a>
+        </div>
+        <% } %>
+      </div>
+      <% } %>
+  </div>
+
+  <%- include('../parts/footer.ejs', { year, appName, appUrl }) %>
+  

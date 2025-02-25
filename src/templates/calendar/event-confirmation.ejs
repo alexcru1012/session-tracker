@@ -1,0 +1,68 @@
+<%- include('../parts/header.ejs', { title, appName, appUrl, stylesheet, showHeaderLogo }) %>
+
+<div class="f-fallback">
+
+  <h1 style="text-align: center; margin-top: 0;"><%= title %></h1>
+
+  <% if (trainerAvatar) { %>
+    <div class="avatar-container center" style="text-align: center; margin: 0px auto;">
+      <img width="30" height="30" class="avatar-img" src="<%= trainerAvatar %>" />
+    </div>
+  <% } %>
+
+  <p style="text-align: center; margin-bottom: 30px;">Your session with <b><%= trainerName %></b> is scheduled for
+    <b><%= dateLabel %></b>.</p>
+
+  <h2 class="title" style="margin-bottom: 10px; font-weight: bold;"><%= eventTitle %></h2>
+  <div style="margin-bottom: 7px;"><%= sessionTypeLabel %></div>
+  <div style="margin-bottom: 7px;"><%= whenDateLabel %></div>
+  <div style="margin-bottom: 7px;"><%= whenTimeLabel %></div>
+
+  <% if (upcomingEvents && upcomingEvents.length > 1) { %>
+  <h4 class="title" style="margin-top: 42px; margin-bottom: 0;"><span class="weight-normal">My upcoming sessions
+      with</span>
+    <%= trainerName %></h4>
+  <table class="table session-table" style="margin-top: 14px; margin-bottom: 21px" width="100%" cellpadding="0"
+    cellspacing="0" role="presentation">
+    <tr>
+      <td colspan="3">
+        <table class="session-content" width="100%" cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+              <th class="session-heading" align="left">
+                <p>Session</p>
+              </th>
+              <th class="session-heading" align="left">
+                <p>Date</p>
+              </th>
+            </tr>
+          </thead>
+
+          <% upcomingEvents.forEach(function(event, index) { %>
+          <tr class="session-row">
+            <td width="65%"><%= event.sessionType %></td>
+            <td width="35%" class="used-label"><%= event.startsAt %></td>
+          </tr>
+          <% }); %>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <% } %>
+
+  <% if (trainerHasContact) { %>
+  <div style="margin-top: 30px; margin-bottom: 21px;">
+    <div style="margin-bottom: 7px;">For questions or schedule changes, please contact <%= trainerName %></div>
+    <% if (trainerContactEmail) { %>
+    <div style="margin-bottom: 7px;">Email: <a href="mailto:<%= trainerContactEmail %>"><%= trainerContactEmail %></a>
+    </div>
+    <% } %>
+    <% if (trainerContactPhone) { %>
+    <div style="margin-bottom: 7px;">Phone: <a href="tel:<%= trainerContactPhone %>"><%= trainerContactPhone %></a>
+    </div>
+    <% } %>
+  </div>
+  <% } %>
+</div>
+
+<%- include('../parts/footer.ejs', { year, appName, appUrl }) %>

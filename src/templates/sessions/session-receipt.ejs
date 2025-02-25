@@ -1,0 +1,83 @@
+<%- include('../parts/header.ejs', { title, appName, appUrl, stylesheet, showHeaderLogo }) %>
+
+<div class="f-fallback">
+  <h1 style="text-align: center; margin-top: 0;">Session Complete!</h1>
+
+  <% if (trainerAvatar) { %>
+  <div class="avatar-container center" style="text-align: center; margin: 0px auto;">
+    <img width="30" height="30" class="avatar-img" src="<%= trainerAvatar %>" />
+  </div>
+  <% } %>
+
+  <p style="text-align: center; margin-bottom: 30px;">
+    <b><%= trainerName %></b> logged a session with you today.
+  </p>
+
+  <table style="width: 100%">
+    <tr>
+      <td style="width: 50%">
+        <h3>Session #<%= totalSessions %></h3>
+      </td>
+      <td style="width: 50%">
+        <h3 class="align-right" style="min-width: 100px; font-weight: normal;"><%= sessionDate %>
+        </h3>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 100%">
+        <h3 class="session-type-label"><%= sessionTypeLabel %></h3>
+      </td>
+    </tr>
+    <% if (trainerMessage) { %>
+    <tr height="14px"></tr>
+    <tr>
+      <td colspan="2">
+        <%= trainerMessage %>
+      </td>
+    </tr>
+    <% } %>
+  </table>
+
+  <h3 style="margin-top: 36px; margin-bottom: 12px;">
+    Your <%= historyNumDays %>-day history:
+  </h3>
+
+  <table class="table session-table" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+    <tr>
+      <td colspan="2">
+        <table class="session-content" width="100%" cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+              <th class="session-heading" align="left">
+                <p>Session</p>
+              </th>
+              <th class="session-heading" align="left">
+                <p>Date</p>
+              </th>
+            </tr>
+          </thead>
+
+          <% usedSessions.forEach(function(session, index) { %>
+          <tr class="session-row">
+            <td width="65%">#<%= totalSessions - index %> - <%= session.sessionType %></td>
+            <td width="35%" class="used-label"><%= session.usedAt %></td>
+          </tr>
+          <% }); %>
+        </table>
+
+        <table class="table" width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="100%" class="session_footer" valign="middle">
+              <p class="session_total session_total--label">Total recorded:
+                <b><%= totalSessions %></b></p>
+              <p class="session_total session_total--label">Remaining:
+                <b><%= availableSessions %></b></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<%- include('../parts/footer.ejs', { year, appName, appUrl }) %>

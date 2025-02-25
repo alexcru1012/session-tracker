@@ -1,0 +1,18 @@
+<%- include('../parts/header.ejs', { title, appName, appUrl, stylesheet }) %>
+
+<p>Welcome to the <%= appName %> community.</p>
+
+<p>The email address used to register your account is: <strong><%= email %></strong></p>
+
+<p>We hope this app helps you manage your clients with ease. If you have questions or comments please <a
+    href="mailto:<%= supportEmail %>">email us</a>. We want to hear your feedback!</p>
+
+<p>If you'd like to leave a review, here's a link to the iOS <a href="<%= iosLink %>">App Store</a> and Google
+  <a href="<%= androidLink %>">Play Store</a>.
+</p>
+
+<p>Thanks again, and enjoy!</p>
+
+<p class="sub">- The <%= appName %> team</p>
+
+<%- include('../parts/footer.ejs', { year, appName, appUrl }) %>

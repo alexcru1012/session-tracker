@@ -1,0 +1,19 @@
+<%- include('../parts/header.ejs', { title, appName, appUrl, stylesheet, showHeaderLogo }) %>
+
+<div class="f-fallback">
+  <h1 style="font-weight: 400;">Hi <b><%= trainerName %></b>,</h1>
+
+  <p>Here is the client data you requested on <b><%= date %></b>. You may download the attached csv and import it into
+    your spreadsheet software.</p>
+  <p>Have a nice day!</p>
+
+  <table class="body-sub" role="presentation">
+    <tr>
+      <td>
+        <p class="f-fallback sub">This email was sent from a notification-only email address.</p>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<%- include('../parts/footer.ejs', { year, appName, appUrl }) %>

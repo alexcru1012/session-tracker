@@ -1,0 +1,13 @@
+<%- include('../parts/header.ejs', { title, appName, appUrl, stylesheet, showHeaderLogo }) %>
+
+<div class="f-fallback">
+  <h3><%= title %></h3>
+
+  <p>Hi <%= trainerName %>,</p>
+  <p>Thanks so much for upgrading your account. You're now a PRO user with unlimited access!<p>
+  <p>Please email us if you have any questions or issues with your account.</p>
+  <p>Happy tracking,</p>
+  <p>Steve & Nico</p>
+
+  <%- include('../parts/footer.ejs', { year, appName, appUrl }) %>
+</div>

@@ -1,0 +1,112 @@
+---
+- hosts: all
+  remote_user: vagrant
+  become: yes
+  become_method: sudo
+
+  vars:
+    - homeDir: /home/ansible
+    - appDir: /var/www/session-tracker-api
+
+  handlers:
+    - name: update pm2
+      shell: pm2 update
+
+  tasks:
+    - name: Add EPEL repository to yum
+      yum_repository:
+        name: epel
+        description: EPEL YUM repo
+        baseurl: http://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+
+    - name: Add postgresql repo to yum
+      yum_repository:
+        name: postgresql-12
+        description: postgresql 12 repo
+        baseurl: https://download.postgresql.org/pub/repos/yum/12/redhat/rhel-7-x86_64
+
+    - name: Add mongodb repo to yum
+      yum_repository:
+        name: mongod
+        description: MongoDB Repository
+        baseurl: http://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.2/$basearch/
+
+    - name: something
+      shell: sudo yum-config-manager --enable pgdg12
+
+    - name: update yum
+      yum:
+        name: '*'
+        state: latest
+        disable_gpg_check: yes
+
+    - name: install yum stuff
+      yum:
+        name: '{{ item }}'
+        state: latest
+        disable_gpg_check: yes
+      with_items:
+        - yum-utils
+        - git
+        - gcc
+        - kernel-headers
+        - kernel-devel
+        - nginx
+        # - npm
+        - nodejs
+        - postgresql12-server
+        - postgresql12-contrib
+        - postgresql12-libs
+        - redis
+        - strace
+        - lsof
+        - curl
+        - mongodb-org
+
+    - name: clean npm cache
+      shell: npm cache clean -f
+
+    - name: disable strict https (for CERT_UNTRUSTED error)
+      shell: npm config set strict-ssl false
+
+    - name: set npm registry to http (for CERT_UNTRUSTED error)
+      shell: npm config set registry="http://registry.npmjs.org/"
+
+    - name: install global npm stuff
+      npm:
+        name: '{{ item }}'
+        global: yes
+      with_items:
+        - pm2
+        - n
+      notify:
+        - update pm2
+
+    - name: upgrade node
+      shell: n stable
+
+    - name: nvm
+      shell: >
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
+      args:
+        creates: '{{ ansible_env.HOME }}/.nvm/nvm.sh'
+
+    - name: Create app directory
+      file: path={{appDir}} state=directory
+
+    - name: enable postgresql on boot
+      service:
+        name: postgresql-12
+        enabled: yes
+
+    - name: enable redis on boot
+      service:
+        name: redis
+        state: started
+        enabled: yes
+
+    - name: enable mongod on boot
+      service:
+        name: mongod
+        state: started
+        enabled: yes

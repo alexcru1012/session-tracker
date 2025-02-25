@@ -1,0 +1,40 @@
+<%- include('../parts/header.ejs', { title, appName, appUrl, stylesheet, showHeaderLogo }) %>
+
+<div class="f-fallback">
+  <h1 style="font-weight: 400;">Woah,</h1>
+  
+  <p>There are <strong><%= numIdle %></strong> idle connections in postgres. I would check it out, boss!</p>
+
+  <div style="margin-top: 30px; margin-bottom: 30px;">
+    <table class="session-content" width="100%" cellpadding="0" cellspacing="0">
+      <thead>
+        <tr>
+          <th class="session-heading" align="left">
+            <p>pid</p>
+          </th>
+          <th class="session-heading" align="left">
+            <p>status</p>
+          </th>
+          <th class="session-heading" align="left">
+            <p>timestamp</p>
+          </th>
+          <th class="session-heading" align="left">
+            <p>query</p>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% rows.forEach(function(row) { %>
+          <tr class="session-row">
+            <td width="20%"><%= row.pid %></td>
+            <td width="20%"><%= row.status %></td>
+            <td width="30%"><%= row.backend_start %></td>
+            <td width="30%"><%= row.query %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('../parts/footer.ejs', { year, appName, appUrl }) %>
