@@ -64,6 +64,7 @@ export const sendActivationEmail = async (to, activationToken) =>
     );
   });
 
+
 export const sendWelcomeEmail = async (to, data) =>
   new Promise(async (resolve, reject) => {
     const ejsOptions = {};
@@ -125,6 +126,7 @@ export const sendWelcomeEmail = async (to, data) =>
     );
   });
 
+
 export const sendForgotPasswordEmail = async (to, name, code) =>
   new Promise(async (resolve, reject) => {
     const ejsOptions = {};
@@ -180,6 +182,57 @@ export const sendForgotPasswordEmail = async (to, name, code) =>
     );
   });
 
+
+export const sendOTPasswordEmail = async (to, name, code) =>
+    new Promise(async (resolve, reject) => {
+      const ejsOptions = {};
+      const smtpOptions = {
+        ...commonSmtpOptions,
+        to,
+        from: `SessionTracker <${process.env.SUPPORT_EMAIL}>`,
+        subject: `One time password for ${Strings.appName}`,
+      };
+      const templateData = {
+        ...commonData,
+        name,
+        code,
+        title: `${Strings.appName} one time password`,
+      };
+  
+      if (!hasRequiredData(templateData)) return 'Missing required input';
+  
+      let htmlString;
+  
+      try {
+        htmlString = await ejs.renderFile(
+          Templates.oneTimePassword,
+          templateData,
+          ejsOptions
+        );
+      } catch (err) {
+        return reject(err);
+      }
+  
+      const mailOptions = getMailOptions(htmlString, smtpOptions);
+  
+      return sendEmail(htmlString, smtpOptions, error => {
+        if (error) {
+          logger.error(`sendOTPasswordEmail error ${error}`);
+          reject(error);
+        } else {
+          logger.info('oneTimePassword email sent.');
+  
+          try {
+            copyMessageToSent(mailOptions);
+          } catch (err) {
+            logger.error(err);
+          }
+  
+          resolve();
+        }
+      });
+  });
+
 export const sendPasswordChangedEmail = async (to, name) =>
   new Promise(async (resolve, reject) => {
     const ejsOptions = {};
@@ -225,52 +278,4 @@ export const sendPasswordChangedEmail = async (to, name) =>
     });
   });
 
-export const sendOTPasswordEmail = async (to, name, code) =>
-  new Promise(async (resolve, reject) => {
-    const ejsOptions = {};
-    const smtpOptions = {
-      ...commonSmtpOptions,
-      to,
-      from: `SessionTracker <${process.env.SUPPORT_EMAIL}>`,
-      subject: `One time password for ${Strings.appName}`,
-    };
-    const templateData = {
-      ...commonData,
-      name,
-      code,
-      title: `${Strings.appName} one time password`,
-    };
 
-    if (!hasRequiredData(templateData)) return 'Missing required input';
-
-    let htmlString;
-
-    try {
-      htmlString = await ejs.renderFile(
-        Templates.oneTimePassword,
-        templateData,
-        ejsOptions
-      );
-    } catch (err) {
-      return reject(err);
-    }
-
-    const mailOptions = getMailOptions(htmlString, smtpOptions);
-
-    return sendEmail(htmlString, smtpOptions, error => {
-      if (error) {
-        logger.error(`sendOTPasswordEmail error ${error}`);
-        reject(error);
-      } else {
-        logger.info('oneTimePassword email sent.');
-
-        try {
-          copyMessageToSent(mailOptions);
-        } catch (err) {
-          logger.error(err);
-        }
-
-        resolve();
-      }
-    });
-  });

@@ -40,6 +40,40 @@ export const makeNewSignupTrialSubscription = () => {
   };
 };
 
+// Assume new users want to start trial
+export const attachUserSubscription = async (user, poolClient) => {
+  let subscription;
+  let wasCreated;
+
+  const isNewUser = moment()
+    .subtract(1, 'month')
+    .isBefore(user.created_at);
+
+  if (!user.subscription_id) {
+    // Will expire in 14 days
+    subscription = await createUserSubscription(
+      user.id,
+      isNewUser ? makeNewSignupTrialSubscription() : makeDefaultSubscription(),
+      poolClient
+    );
+    wasCreated = true;
+  } else
+    subscription = await getUserSubscription(user.subscription_id, poolClient);
+
+  if (wasCreated) await setSubscriptionId(user.id, subscription.id, poolClient);
+
+  // Attach limit
+  subscription = {
+    ...subscription,
+    limit: TierLimits[subscription.tier],
+  };
+
+  return {
+    ...user,
+    subscription: omit(subscription, OmitProps.subscription),
+  };
+};
+
 /**
  *
  * @param {'month'|'year'} interval - Length of subscription
@@ -106,38 +140,6 @@ export const requireSubscriptionTier = tierRequired => async (
   return next(createError(403));
 };
 
-// Assume new users want to start trial
-export const attachUserSubscription = async (user, poolClient) => {
-  let subscription;
-  let wasCreated;
 
-  const isNewUser = moment()
-    .subtract(1, 'month')
-    .isBefore(user.created_at);
-
-  if (!user.subscription_id) {
-    // Will expire in 14 days
-    subscription = await createUserSubscription(
-      user.id,
-      isNewUser ? makeNewSignupTrialSubscription() : makeDefaultSubscription(),
-      poolClient
-    );
-    wasCreated = true;
-  } else
-    subscription = await getUserSubscription(user.subscription_id, poolClient);
-
-  if (wasCreated) await setSubscriptionId(user.id, subscription.id, poolClient);
-
-  // Attach limit
-  subscription = {
-    ...subscription,
-    limit: TierLimits[subscription.tier],
-  };
-
-  return {
-    ...user,
-    subscription: omit(subscription, OmitProps.subscription),
-  };
-};
 
 export default {};
