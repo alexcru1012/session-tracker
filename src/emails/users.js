@@ -56,6 +56,7 @@ export const sendMailToMissingUser = async user =>
     });
   });
 
+  
 /** Send an email the first time a user successfully upgrades  */
 export const sendUpgradeSuccessEmail = async (user, _userMeta) =>
   new Promise(async (resolve, reject) => {
